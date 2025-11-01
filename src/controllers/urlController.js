@@ -1,6 +1,7 @@
 const shortid = require('shortid');
 const URL = require('../models/url');
 
+
 async function createShortUrl(req, res) {
   try {
     const body = req.body;
@@ -10,23 +11,23 @@ async function createShortUrl(req, res) {
       return res.status(400).json({ error: "URL is required" });
     }
 
-    // Check if URL already exists
+
     const existingUrl = await URL.findOne({ redirectUrl: body.url });
     
     if (existingUrl) {
-      // Return existing short ID
+
       return res.status(200).json({ id: existingUrl.shortId, redirectUrl: existingUrl.redirectUrl });
     }
 
-    // Create new short URL if it doesn't exist
-    const shortID = shortid.generate ? shortid.generate() : shortid();
+
+    const shortID = shortid(8)
     const newUrl = await URL.create({
       shortId: shortID,
       redirectUrl: body.url,
       visithistory: []
     });
 
-    return res.status(201).json({ id: shortID, redirectUrl: newUrl.redirectUrl });
+    return res.status(201).json({ id: shortID });
   } catch (err) {
     console.error('createShortUrl error:', err);
     return res.status(500).json({ error: 'Server error' });
@@ -54,4 +55,12 @@ async function handleRedirecturl(req,res){
       }
     
 }
-module.exports = { createShortUrl ,handleRedirecturl};
+
+async function getAnalytics(req,res){
+  const shortId=req.params.shortId;
+  const result=await URL.findOne({shortId});
+  return res.json({totalClicks:result.visithistory.length,analytics:result.visithistory});
+}
+
+
+module.exports = { createShortUrl ,handleRedirecturl,getAnalytics};

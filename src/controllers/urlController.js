@@ -16,7 +16,9 @@ async function createShortUrl(req, res) {
     
     if (existingUrl) {
 
-      return res.status(200).json({ id: existingUrl.shortId, redirectUrl: existingUrl.redirectUrl });
+      return res.render('home', {
+        id: existingUrl.shortId
+      });
     }
 
 
@@ -27,7 +29,9 @@ async function createShortUrl(req, res) {
       visithistory: []
     });
 
-    return res.status(201).json({ id: shortID });
+    res.render('home',{
+      id:shortID
+    })
   } catch (err) {
     console.error('createShortUrl error:', err);
     return res.status(500).json({ error: 'Server error' });

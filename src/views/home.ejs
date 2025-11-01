@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>body{
+       font-size: large;
+       font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    }</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>this is Home Page</title>
+</head>
+<body>
+
+ <h>URL Shortner</h>
+ <% if (locals.id) { %>
+    <p>URL Generated :http://localhost:9000/url/<%= id %></p>
+    <% } %>
+
+
+ <div><form method="post" action="/url">
+    <label>enter original url </label>
+    <input type="text" 
+name="url"
+    placeholder="https://www.example.com"/>
+<button type="submit">generate short url </button>
+</form>
+</div>
+</body>
+</html>
